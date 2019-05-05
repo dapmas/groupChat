@@ -10,23 +10,25 @@ const PORT = 4000;
 const express = require('express'),
       http = require('http'),
       bodyParser = require('body-parser'),
-      main = express(),
-      server = http.createServer(main),
+      app = express(),
+      server = http.createServer(app),
       io  = require('socket.io').listen(server);
       //io.set('log level', 2);
 
 server.listen(PORT, null, function() {
     console.log("Listening on port " + PORT);
 });
+
+// middleware to serve static/public files
+app.use(express.static('public'));
+
+// bodyParser acts as a middleware to parse POST requests
 //main.use(express.bodyParser());
 
+// routes
 // main.get('/', function(req, res){ res.sendFile(__dirname + '/public/index.html'); });
 // main.get('/index.html', function(req, res){ res.sendfile('newclient.html'); });
 // main.get('/client.html', function(req, res){ res.sendfile('newclient.html'); });
-
-// middleware to serve static/public files
-main.use(express.static('public'));
-
 
 /**********************
 *P2P connection stuff *

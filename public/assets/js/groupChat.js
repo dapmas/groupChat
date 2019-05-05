@@ -1,12 +1,13 @@
 /** CONFIG **/
-// var SIGNALING_SERVER = "http://localhost";
-var SIGNALING_SERVER = "https://7ee087f2.ngrok.io";
+var SIGNALING_SERVER = "http://localhost:4000";
+// var SIGNALING_SERVER = "https://7ee087f2.ngrok.io";
 var USE_AUDIO = false;
 var USE_VIDEO = true;
-var DEFAULT_CHANNEL = 'some-global-channel-name';
+// var DEFAULT_CHANNEL = 'some-global-channel-name';
+var DEFAULT_CHANNEL = prompt("Create or Join Room");
 var MUTE_AUDIO_BY_DEFAULT = false;
 
-/** You should probably use a different stun server doing commercial stuff **/
+/** Need a different stun server for doing commercial stuff **/
 /** Also see: https://gist.github.com/zziuni/3741933 **/
 var ICE_SERVERS = [
     {url:"stun:stun.l.google.com:19302"}
