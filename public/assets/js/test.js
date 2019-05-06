@@ -1,17 +1,24 @@
 /** CONFIG **/
 const SIGNALING_SERVER = "http://localhost:4000";
-// let SIGNALING_SERVER = "https://7ee087f2.ngrok.io";
 const USE_AUDIO = false;
 const USE_VIDEO = true;
-// let DEFAULT_CHANNEL = 'some-global-channel-name';
+// const DEFAULT_CHANNEL = 'some-global-channel-name';
 const CHANNEL = prompt("Create or Join Room");
 const MUTE_AUDIO_BY_DEFAULT = false;
 
 /** Need a different stun server for doing commercial stuff **/
-/** Also see: https://gist.github.com/zziuni/3741933 **/
 const ICE_SERVERS = [
     {url:"stun:stun.l.google.com:19302"}
 ];
+
+/** constraints for screen share **/
+const DISPLAY_MEDIA_OPTIONS = {
+  video: {
+    cursor: "never"
+  },
+  audio: false
+};
+
 
 let signaling_socket = null;   /* our socket.io connection to our webserver */
 let local_media_stream = null; /* our own microphone / webcam */
@@ -45,9 +52,11 @@ function init() {
         peers = {};
         peer_media_elements = {};
     });
+
     function join_chat_channel(channel, userdata) {
         signaling_socket.emit('join', {"channel": channel, "userdata": userdata});
     }
+
     function part_chat_channel(channel) {
         signaling_socket.emit('part', channel);
     }
@@ -210,8 +219,6 @@ function init() {
 }
 
 
-
-
 /***********************/
 /** Local media stuff **/
 /***********************/
@@ -253,6 +260,7 @@ function setup_local_media(callback, errorback) {
             alert("You chose not to provide access to the camera/microphone, demo will not work.");
             if (errorback) errorback();
         });
+
 }
 
 
