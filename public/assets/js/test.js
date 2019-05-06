@@ -1,5 +1,5 @@
 /** CONFIG **/
-const SIGNALING_SERVER = "http://localhost:4000";
+const SIGNALING_SERVER = "https://930b9c87.ngrok.io";
 const USE_AUDIO = false;
 const USE_VIDEO = true;
 // const DEFAULT_CHANNEL = 'some-global-channel-name';
@@ -242,24 +242,43 @@ function setup_local_media(callback, errorback) {
         element.srcObject = stream;
      };
 
-    navigator.getUserMedia({"audio":USE_AUDIO, "video":USE_VIDEO},
-        function(stream) { /* user accepted access to a/v */
-            console.log("Access granted to audio/video");
-            local_media_stream = stream;
-            let local_media = USE_VIDEO ? $("<video>") : $("<audio>");
-            local_media.attr("autoplay", "autoplay");
-            local_media.attr("muted", "true"); /* always mute ourselves by default */
-            local_media.attr("controls", "");
-            $('body').append(local_media);
-            attachMediaStream(local_media[0], stream);
+     function startCapture() {
+       navigator.mediaDevices.getDisplayMedia(DISPLAY_MEDIA_OPTIONS)
+       .then(function(stream) {
+         console.log("Access granted to audio/video");
+         local_media_stream = stream;
+         let local_media = USE_VIDEO ? $("<video>") : $("<audio>");
+         local_media.attr("autoplay", "autoplay");
+         local_media.attr("muted", "true"); /* always mute ourselves by default */
+         local_media.attr("controls", "");
+         $('body').append(local_media);
+         attachMediaStream(local_media[0], stream);
 
-            if (callback) callback();
-        },
-        function() { /* user denied access to a/v */
-            console.log("Access denied for audio/video");
-            alert("You chose not to provide access to the camera/microphone, demo will not work.");
-            if (errorback) errorback();
-        });
+         if (callback) callback();
+       })
+       .catch(err => console.error("Error: " + err));
+     }
+
+     startCapture();
+
+    // navigator.mediaDevices.getDisplayMedia(DISPLAY_MEDIA_OPTIONS,
+    //     function(stream) { /* user accepted access to a/v */
+    //         console.log("Access granted to audio/video");
+    //         local_media_stream = stream;
+    //         let local_media = USE_VIDEO ? $("<video>") : $("<audio>");
+    //         local_media.attr("autoplay", "autoplay");
+    //         local_media.attr("muted", "true"); /* always mute ourselves by default */
+    //         local_media.attr("controls", "");
+    //         $('body').append(local_media);
+    //         attachMediaStream(local_media[0], stream);
+    //
+    //         if (callback) callback();
+    //     },
+    //     function() { /* user denied access to a/v */
+    //         console.log("Access denied for audio/video");
+    //         alert("You chose not to provide access to the camera/microphone, demo will not work.");
+    //         if (errorback) errorback();
+    //     });
 
 }
 

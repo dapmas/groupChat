@@ -1,11 +1,9 @@
 /** CONFIG **/
-const SIGNALING_SERVER = "http://localhost:4000";
-// let SIGNALING_SERVER = "https://7ee087f2.ngrok.io";
-const USE_AUDIO = false;
-const USE_VIDEO = true;
-// let DEFAULT_CHANNEL = 'some-global-channel-name';
-const CHANNEL = prompt("Create or Join Room");
-const MUTE_AUDIO_BY_DEFAULT = false;
+const SIGNALING_SERVER = "http://localhost:4000",
+      USE_AUDIO = false,
+      USE_VIDEO = true,
+      CHANNEL = prompt("Create or Join Room"),
+      MUTE_AUDIO_BY_DEFAULT = false;
 
 /** Need a different stun server for doing commercial stuff **/
 /** Also see: https://gist.github.com/zziuni/3741933 **/
@@ -13,10 +11,10 @@ const ICE_SERVERS = [
     {url:"stun:stun.l.google.com:19302"}
 ];
 
-let signaling_socket = null;   /* our socket.io connection to our webserver */
-let local_media_stream = null; /* our own microphone / webcam */
-let peers = {};                /* keep track of our peer connections, indexed by peer_id (aka socket.io id) */
-let peer_media_elements = {};  /* keep track of our <video>/<audio> tags, indexed by peer_id */
+let signaling_socket = null,   /* our socket.io connection to our webserver */
+    local_media_stream = null, /* our own microphone / webcam */
+    peers = {},                /* keep track of our peer connections, indexed by peer_id (aka socket.io id) */
+    peer_media_elements = {};  /* keep track of our <video>/<audio> tags, indexed by peer_id */
 
 function init() {
     console.log("Connecting to signaling server");
